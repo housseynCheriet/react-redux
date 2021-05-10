@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import Navbar from '../Navbar/Navbar';
 import { compose } from 'redux'
 import { withRouter } from "react-router";
-import { addToCart, check_if_item_exist_in_cart, removeFromCart } from '../../actions';
+import { addToCart ,get_total_price , check_if_item_exist_in_cart, removeFromCart } from '../../actions';
 
 class Index extends Component {
     // let { id } = useParams();
@@ -19,7 +19,9 @@ class Index extends Component {
         const product_details_by_id = this.props.products.find(product =>
             product.id === this.props.productId);
         return (
+            console.log("**************************************"),
             <div>
+            <div>{this.props.total_price}</div>
                 <Navbar />
                 <div className="container">
                     <div className="row">
@@ -46,20 +48,28 @@ class Index extends Component {
                                                 <div className="col-xs-10 col-md-10 text-xs-center form-outline" id="hits">
                                                     <span className="fa fa-sort-amount-up">&nbsp;</span>
                                                     <label className="form-label" htmlFor="qty">Quantity</label>
-                                                    <input type="number" id="qty" min="1" className="form-control" onChange={(e) => { this.setState({ qty: e.target.value }) }} />
+                                                    <input type="number" id="qty" min="1" className="form-control" onChange={(e) => { 
+                                                       // e.preventDefault();
+                                                        this.setState({ qty: e.target.value })
+                                                        }} />
 
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-xs-10 col-md-10 text-xs-center " id="fan">
                                                     {(this.props.CheckIfItemExistInCart(product_details_by_id.id)) ?
-                                                        <button className="btn btn-danger form-control d-block" onClick={()=>{
+                                                        <button className="btn btn-danger form-control d-block" onClick={(e)=>{
+                                                          //  e.preventDefault();
                                                             this.props.Add_To_Cart(product_details_by_id.id, this.state.qty);
                                                            
                                                         }
                                                     }><span className="fa fa-cart-plus">&nbsp;</span>Add to cart</button>
                                                         :
-                                                        <button className="btn btn-danger form-control d-block" onClick={()=>this.props.Remove_From_Cart(product_details_by_id.id)}><span className="fa fa-cart-plus">&nbsp;</span>Remove from cart</button>
+                                                        <button className="btn btn-danger form-control d-block" onClick={(e)=>{
+                                                          //  e.preventDefault();
+                                                            this.props.Remove_From_Cart(product_details_by_id.id)}
+                                                        }><span className="fa fa-cart-plus">&nbsp;</span>Remove from cart</button>
+                                                        
                                                     },
                                                     
                                                 </div>  
@@ -82,16 +92,21 @@ class Index extends Component {
 
 
 }
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, ownProps) => {
+return {
     productId: ownProps.match.params.id,
     products: state.products,
     cart: state.cart, 
     total_price: state.total_price
-});
+}
+};
 
 const mapDispatchToProps = (dispatch) => {
+    console.log("Add_To_Cart___");
     return {
+
         Add_To_Cart: (product_id, qty) => dispatch(addToCart(product_id, qty)),
+        //total__price: () => dispatch(get_total_price()),
         Remove_From_Cart: (product_id) => dispatch(removeFromCart(product_id)),
         CheckIfItemExistInCart: (product_id) => dispatch(check_if_item_exist_in_cart(product_id)),
     }

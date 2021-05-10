@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { get_total_price, removeFromCart } from '../../actions';
 const Index = ({carts}) => {
     //console.log(carts)
+    var totalShipping=0,totalProduct=0,total=0;
     return (
         <div>
             <Navbar />
@@ -40,11 +41,14 @@ const Index = ({carts}) => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {
+                                                { 
                                                //  console.log("cartsForTest: ",this),
                                                 (JSON.parse(localStorage.getItem("cart")) !== null)?
                                                 JSON.parse(localStorage.getItem("cart")).map((cartItem) => (
-                                               //     console.log('cartitemfortest',this.props),
+                                                    totalProduct++,
+                                                    totalShipping+=Number(cartItem.qty),
+                                                    total+=cartItem.product.price*cartItem.qty,
+                                                    console.log('cartitemfortest',10000),
                                                     <tr>
                                                         <td><img src="https://via.placeholder.com/400x200/FFB6C1/000000" className="img-cart" /></td>
                                                         <td><strong>{cartItem.product.image}</strong><p>Size : 26</p></td>
@@ -56,7 +60,7 @@ const Index = ({carts}) => {
                                                             </form>
                                                         </td>
                                                         <td>{`${cartItem.product.price}$`}</td>
-                                                        <td>$54.00</td>
+                                                        <td>{`${cartItem.product.price*cartItem.qty}$`}</td>
                                                     </tr>
 
 
@@ -66,16 +70,16 @@ const Index = ({carts}) => {
                                                 </tr>
                                                 <tr>
                                                     <td colSpan="4" className="text-right">Total Product</td>
-                                                    {/* <td>{get_total_price}</td> */}
-                                                    <td>{JSON.parse(localStorage.getItem("cart"))!==null?localStorage.getItem("total_price"):0}</td>
+                                                     <td>{totalProduct}</td> 
+                                                    {/*<td>{JSON.parse(localStorage.getItem("cart"))!==null?localStorage.getItem("total_price"):0}</td>*/}
                                                 </tr>
                                                 <tr>
                                                     <td colSpan="4" className="text-right">Total Shipping</td>
-                                                    <td>$2.00</td>
+                                                    <td>{totalShipping}</td>
                                                 </tr>
                                                 <tr>
                                                     <td colSpan="4" className="text-right"><strong>Total</strong></td>
-                                                    <td>$88.00</td>
+                                                    <td>${total}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
