@@ -71,6 +71,7 @@ const getProductListReducer = function (state = initState, action) {
             localStorage.setItem("total_price",state.total_price);
             localStorage.setItem("cart",JSON.stringify(state.cart))
             /* */ 
+            document.querySelector("#t_price").innerText=state.total_price;
             return state;
 
         case REMOVE_FROM_CART:

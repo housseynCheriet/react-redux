@@ -11,17 +11,23 @@ import { addToCart ,get_total_price , check_if_item_exist_in_cart, removeFromCar
 class Index extends Component {
     // let { id } = useParams();
     state = {
-        qty: 0
+        qty: 0,
+       
     }
-    // const [qty, setQty] = useState(0);
+   //  const [qty, setQty] = useState(0);//console.log(useState(0));
+  //  const [t_price, setCount] = useState(0);
+
+ 
+
     render() {
-        //console.log(this.props.products);
+       // console.log(this.props)
+       // const { articles } = this.props;
         const product_details_by_id = this.props.products.find(product =>
             product.id === this.props.productId);
         return (
-            console.log("**************************************"),
+           // console.log("**************************************"),
             <div>
-            <div>{this.props.total_price}</div>
+            
                 <Navbar />
                 <div className="container">
                     <div className="row">
@@ -50,6 +56,7 @@ class Index extends Component {
                                                     <label className="form-label" htmlFor="qty">Quantity</label>
                                                     <input type="number" id="qty" min="1" className="form-control" onChange={(e) => { 
                                                        // e.preventDefault();
+                                                       console.log(this);
                                                         this.setState({ qty: e.target.value })
                                                         }} />
 
@@ -60,7 +67,8 @@ class Index extends Component {
                                                     {(this.props.CheckIfItemExistInCart(product_details_by_id.id)) ?
                                                         <button className="btn btn-danger form-control d-block" onClick={(e)=>{
                                                           //  e.preventDefault();
-                                                            this.props.Add_To_Cart(product_details_by_id.id, this.state.qty);
+                                                          this.props.Add_To_Cart(product_details_by_id.id, this.state.qty);
+                                                                
                                                            
                                                         }
                                                     }><span className="fa fa-cart-plus">&nbsp;</span>Add to cart</button>
@@ -92,6 +100,7 @@ class Index extends Component {
 
 
 }
+
 const mapStateToProps = (state, ownProps) => {
 return {
     productId: ownProps.match.params.id,
@@ -106,7 +115,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
 
         Add_To_Cart: (product_id, qty) => dispatch(addToCart(product_id, qty)),
-        //total__price: () => dispatch(get_total_price()),
+        get_total_price: () => dispatch(get_total_price()),
         Remove_From_Cart: (product_id) => dispatch(removeFromCart(product_id)),
         CheckIfItemExistInCart: (product_id) => dispatch(check_if_item_exist_in_cart(product_id)),
     }
@@ -116,4 +125,4 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
 )(Index);
 
-
+//export default connect(mapStateToProps, mapDispatchToProps)(Index);
