@@ -42,7 +42,6 @@ const getProductListReducer = function (state = initState, action) {
             return state;
 
         case ADD_TO_CART:
-        var _itemIsExistInCart=itemIsExistInCart(action);
         if(localStorage.getItem("cart") !== null){
             state.cart = JSON.parse(localStorage.getItem("cart"))
         }
