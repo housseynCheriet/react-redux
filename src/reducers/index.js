@@ -4,6 +4,8 @@ const initState = {
     products: stockData,
     cart: [],
     total_price: 0,
+    totalProduct:0,
+    totalShipping:0,
     itemIsExistInCart: false
 }
 function itemIsExistInCart(action){
@@ -64,10 +66,17 @@ const getProductListReducer = function (state = initState, action) {
             //state.cart = cartItems
             console.log("add to cart: " , state)
             /* */
+            // reset value
+          state.totalProduct=0;state.totalShipping=0;
             state.cart.map(item => (
-                state.total_price += item.product.price * item.qty
+                state.total_price += item.product.price * item.qty,
+                state.totalProduct++,
+                state.totalShipping+=item.qty
             ));
+
             localStorage.setItem("total_price",state.total_price);
+             localStorage.setItem("totalProduct",state.totalProduct);
+              localStorage.setItem("totalShipping",state.totalShipping);
             localStorage.setItem("cart",JSON.stringify(state.cart))
             /* */ 
             document.querySelector("#t_price").innerText=state.total_price;
