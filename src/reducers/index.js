@@ -34,6 +34,20 @@ function upsert(cart, cartItems) {
   }
   else cart.push(cartItems);
 }
+
+function resetCart(state){
+    state.totalProduct=0;state.totalShipping=0;
+            state.cart.map(item => (
+                state.total_price += item.product.price * item.qty,
+                state.totalProduct++,
+                state.totalShipping+=item.qty
+            ));
+ document.querySelector("#t_price").innerText=state.total_price;
+            localStorage.setItem("total_price",state.total_price);
+             localStorage.setItem("totalProduct",state.totalProduct);
+              localStorage.setItem("totalShipping",state.totalShipping);
+            localStorage.setItem("cart",JSON.stringify(state.cart))
+}
 const getProductListReducer = function (state = initState, action) {
     //console.log(state.products[0].id);
     ///////////localStorage.clear()
@@ -64,35 +78,27 @@ const getProductListReducer = function (state = initState, action) {
             //console.log("JSON.stringify(cartItems):  ",JSON.stringify(cartItems))
             //console.log("test JSON.parse:  ",((localStorage.getItem("cart"))))
             //state.cart = cartItems
-            console.log("add to cart: " , state)
+            //console.log("add to cart: " , state)
             /* */
-            // reset value
-          state.totalProduct=0;state.totalShipping=0;
-            state.cart.map(item => (
-                state.total_price += item.product.price * item.qty,
-                state.totalProduct++,
-                state.totalShipping+=item.qty
-            ));
-
-            localStorage.setItem("total_price",state.total_price);
-             localStorage.setItem("totalProduct",state.totalProduct);
-              localStorage.setItem("totalShipping",state.totalShipping);
-            localStorage.setItem("cart",JSON.stringify(state.cart))
+            // reset cart
+          resetCart(state);
             /* */ 
-            document.querySelector("#t_price").innerText=state.total_price;
+           
             return state;
 
         case REMOVE_FROM_CART:
             // //console.log("from reducer: ", state)
-            const ProductAfterRemove = state.products.filter(product =>
-                product.id !== action.product_id);
-                localStorage.setItem("cart",ProductAfterRemove)
-            state.cart = ProductAfterRemove
+            
+                
+               
+        const ProductAfterRemove = JSON.parse(localStorage.getItem("cart")).filter(product =>
+                product.product.id !== action.product_id);
+
+            state.cart = ProductAfterRemove;
+            //localStorage.setItem("cart",ProductAfterRemove)
             /* */
-            state.cart.map(item => (
-                state.total_price += item.product.price * item.qty
-            ));
-            localStorage.setItem("total_price",state.total_price)
+            // reset cart
+          resetCart(state);
             /* */
             return state;
 

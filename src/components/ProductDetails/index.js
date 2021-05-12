@@ -22,10 +22,11 @@ class Index extends Component {
     render() {
        // console.log(this.props)
        // const { articles } = this.props;
+
         const product_details_by_id = this.props.products.find(product =>
             product.id === this.props.productId);
         return (
-           // console.log("**************************************"),
+          console.log("**************************************",this.props),
             <div>
             
                 <Navbar />
@@ -40,7 +41,7 @@ class Index extends Component {
                                     <div className="row">
                                         <div className="col-xs-6 col-md-6">
                                             <ul className="pb-product-details-ul">
-                                                <li><span className="fa fa-product-hunt">&nbsp;{`ProductName: ${product_details_by_id.ProductName} `}</span></li>
+                                                <li><span className="fa fa-product-hunt">&nbsp;{`ProductName: ${product_details_by_id.productName} `}</span></li>
                                                 <li><span className="fa fa-microchip">&nbsp;{`CPU: ${product_details_by_id.cpu} `}</span></li>
                                                 <li><span className="fa fa-laptop">&nbsp;{`Screen: ${product_details_by_id.screen} `}</span></li>
                                                 <li><span className="fa fa-memory">&nbsp;{`RAM: ${product_details_by_id.ram} `}</span></li>
@@ -64,14 +65,16 @@ class Index extends Component {
                                             </div>
                                             <div className="row">
                                                 <div className="col-xs-10 col-md-10 text-xs-center " id="fan">
-                                                    {(this.props.CheckIfItemExistInCart(product_details_by_id.id)) ?
+                                                    
                                                         <button className="btn btn-danger form-control d-block" onClick={(e)=>{
                                                           //  e.preventDefault();
                                                           this.props.Add_To_Cart(product_details_by_id.id, this.state.qty);
-                                                                
+                                                            console.log("---------------------------------------",this.props)    
                                                            
                                                         }
                                                     }><span className="fa fa-cart-plus">&nbsp;</span>Add to cart</button>
+                                                    {(JSON.parse(localStorage.getItem("cart")).findIndex(_item => _item.product.id === product_details_by_id.id)==-1) ? ""
+                                                        
                                                         :
                                                         <button className="btn btn-danger form-control d-block" onClick={(e)=>{
                                                           //  e.preventDefault();
@@ -120,6 +123,7 @@ const mapDispatchToProps = (dispatch) => {
         CheckIfItemExistInCart: (product_id) => dispatch(check_if_item_exist_in_cart(product_id)),
     }
 };
+
 export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
